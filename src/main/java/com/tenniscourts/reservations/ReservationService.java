@@ -71,12 +71,11 @@ public class ReservationService {
         return BigDecimal.ZERO;
     }
 
-    /*TODO: This method actually not fully working, find a way to fix the issue when it's throwing the error:
-            "Cannot reschedule to the same slot.*/
     public ReservationDTO rescheduleReservation(Long previousReservationId, Long scheduleId) {
         Reservation previousReservation = cancel(previousReservationId);
 
-        if (scheduleId.equals(previousReservation.getSchedule().getId())) {
+        if (scheduleId.equals(previousReservation.getSchedule().getId()) &&
+                previousReservation.getReservationStatus().name().equals(ReservationStatus.READY_TO_PLAY.name())) {
             throw new IllegalArgumentException("Cannot reschedule to the same slot.");
         }
 
